@@ -1,0 +1,19 @@
+.App {
+  min-width: 600px;
+  background: #F7C1C1;
+
+  margin: 0 auto;
+  padding: 20px;
+  border-radius: 0 0 10px 10px;
+
+  .header {
+    border-bottom: 1px solid rgb(77, 77, 77);
+
+    h1 {
+      color: black;
+      font-weight: 300;
+      text-shadow: 1px 1px 0px #7A7A7A;
+    }
+    
+  }
+}

@@ -1,0 +1,24 @@
+.wrapper {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+  grid-gap: 10px;
+  justify-items: center;
+
+  .board {
+    border: 1px solid black;
+    border-radius: 20px;
+    min-width: 300px;
+    height: 400px;
+  
+
+    ul { 
+      padding: 2px;
+
+    }
+  }
+
+  .todo_item {
+    border: 1px solid red;
+    list-style: none;
+  }
+}
