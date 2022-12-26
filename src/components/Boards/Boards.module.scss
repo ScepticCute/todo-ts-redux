@@ -9,6 +9,8 @@
     border-radius: 20px;
     min-width: 300px;
     height: 400px;
+    overflow: hidden;
+    overflow-y: scroll;
   
 
     ul { 
@@ -20,5 +22,12 @@
   .todo_item {
     border: 1px solid red;
     list-style: none;
+
+    .todo_content {
+      font-weight: 100;
+    }
+    .checked {
+      text-decoration: line-through;
+    }
   }
 }

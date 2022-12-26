@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useAppDispatch } from '../../hooks';
-import { createBoard } from '../../redux/slices/todoSlices';
+import { createBoard } from '../../redux/slices/boardSlices';
 import styles from './FormCreateBoard.module.scss';
 
 export const FormCreateBoard = ({ setOpen }: any) => {
