@@ -19,28 +19,26 @@ export const FormCreateBoard = ({ setOpen }: any) => {
   };
 
   return (
-    <div className={styles.blackout_wrapper}>
-      <div className={styles.wrapper}>
-        <button
-          onClick={() => {
-            setOpen();
-          }}>
-          Закрыть окно
-        </button>
-        <form className={styles.wrapper}>
-          <input
-            type="text"
-            placeholder="Введите название доски..."
-            value={inputValue}
-            onChange={(e) => setInputValue(e.target.value)}
-          />
-          <input
-            type="submit"
-            value="Создать доску задач"
-            onClick={(e) => onClickSubmit(e, inputValue)}
-          />
-        </form>
-      </div>
+    <div className={styles.wrapper}>
+      <button
+        onClick={() => {
+          setOpen();
+        }}>
+        Закрыть окно
+      </button>
+      <form className={styles.form}>
+        <input
+          type="text"
+          placeholder="Введите название доски..."
+          value={inputValue}
+          onChange={(e) => setInputValue(e.target.value)}
+        />
+        <input
+          type="submit"
+          value="Создать доску задач"
+          onClick={(e) => onClickSubmit(e, inputValue)}
+        />
+      </form>
     </div>
   );
 };

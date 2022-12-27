@@ -43,6 +43,15 @@ export const boardsSlice = createSlice({
         ],
       });
     },
+    renameBoard: (state, action: PayloadAction<[boardId: string, newTitle: string]>) => {
+      state.boards.forEach((board) => {
+        board.id !== action.payload[0] || (board.title = action.payload[1]);
+      });
+    },
+    deleteBoard: (state, action: PayloadAction<string>) => {
+      const boardIdx = state.boards.findIndex((board) => board.id === action.payload);
+      state.boards.splice(boardIdx, 1);
+    },
     createTodo: (
       state,
       action: PayloadAction<[boardId: string, title: string, content: string]>,
@@ -59,20 +68,6 @@ export const boardsSlice = createSlice({
         order: 0,
       });
     },
-    renameBoard: (state, action: PayloadAction<[boardId: string, newTitle: string]>) => {
-      state.boards.forEach((board) => {
-        board.id !== action.payload[0] || (board.title = action.payload[1]);
-      });
-    },
-    deleteBoard: (state, action: PayloadAction<string>) => {
-      const boardIdx = state.boards.findIndex((board) => board.id === action.payload);
-      state.boards.slice(boardIdx, 1);
-      console.log(state.boards[boardIdx].id === action.payload);
-      console.log(state.boards[boardIdx].id + '   ' + action.payload);
-    },
-    // !!!!!!!! Элемент из массива
-    // !ПОЧИНИ! не удаляется.
-    // !!!!!!!! filter не помог.
     renameTodo: (state, action: PayloadAction<[todoId: string, newTitle: string]>) => {
       state.boards.forEach((board) =>
         board.items.forEach((todo) => {
@@ -90,9 +85,22 @@ export const boardsSlice = createSlice({
     todoChecked: (state, action: PayloadAction<string>) => {
       state.boards.forEach((board) =>
         board.items.forEach((todo) => {
-          todo.id === action.payload[0] || (todo.isChecked = !todo.isChecked);
+          todo.id !== action.payload || (todo.isChecked = !todo.isChecked);
         }),
       );
+    },
+    deleteTodo: (state, action: PayloadAction<string>) => {
+      let boardIdx = 0;
+      let todoIdx = 0;
+      state.boards.forEach((board, i) =>
+        board.items.forEach((todo, j) => {
+          if (todo.id === action.payload) {
+            boardIdx = i;
+            todoIdx = j;
+          }
+        }),
+      );
+      state.boards[boardIdx].items.splice(todoIdx, 1);
     },
   },
 });
@@ -105,5 +113,6 @@ export const {
   renameTodo,
   updateContentInTodo,
   todoChecked,
+  deleteTodo,
 } = boardsSlice.actions;
 export default boardsSlice.reducer;

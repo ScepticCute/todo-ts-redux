@@ -3,18 +3,28 @@ import styles from './App.module.scss';
 import { FormCreateBoard } from './components/FormCreateBoard/FormCreateBoard';
 import { useState } from 'react';
 
+import { HiPencilSquare } from 'react-icons/hi2';
+
 function App() {
-  const [isOpen, setOpen] = useState(false);
+  const [boardCreatorIsOpen, setBoardCreatorOpen] = useState(false);
 
   return (
-    <div className={styles.App}>
-      <header className={styles.header}>
-        <h1>TODO APP</h1>
-      </header>
-      <button onClick={() => setOpen(!isOpen)}>Создать новую доску</button>
-      {isOpen ? <FormCreateBoard setOpen={setOpen} /> : ''}
-      <Boards />
-    </div>
+    <>
+      {boardCreatorIsOpen ? <FormCreateBoard setOpen={setBoardCreatorOpen} /> : ''}
+      {/* Выше расположено модальное окно */}
+      <div className={styles.App}>
+        <header className={styles.header}>
+          <h1 className={styles.logo}>TODO APP</h1>
+          <button
+            className={styles.create_board_button}
+            onClick={() => setBoardCreatorOpen(!boardCreatorIsOpen)}>
+            <HiPencilSquare />
+          </button>
+        </header>
+
+        <Boards />
+      </div>
+    </>
   );
 }
 

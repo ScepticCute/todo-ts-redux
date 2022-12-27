@@ -1,14 +1,13 @@
-.blackout_wrapper {
-  position: fixed;
-  top: 0;
-  bottom: 0;
-  right: 0;
-  left: 0;
-  background-color: rgb(0, 0, 0, .2);
-}
-
 .wrapper {
+  position: fixed;
+  background: rgb(219, 215, 215, 0.5);
+  border-radius: 30px;
+  box-shadow: rgb(15 15 15 / 10%) 0px 0px 0px 1px, rgba(105, 104, 104, 0.6) 0px 2px 4px;
+  border: 1px rgb(251, 229, 255) solid;
   width: 700px;
   height: 600px;
   margin: 0 auto;
+  padding: 10px;
+  top: 10vh;
+  right: 33.3%;
 }
