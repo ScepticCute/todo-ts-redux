@@ -28,6 +28,14 @@ export const boardsSlice = createSlice({
   reducers: {
     createBoard: (state, action: PayloadAction<string>) => {
       let order = 0;
+      state.boards.forEach((board) =>
+          { 
+            if(board.order >= order) {
+            order = board.order+1
+          }
+        }
+      )
+
       state.boards.push({
         title: action.payload || `Доска ${order}`,
         id: uuidv4(),
@@ -40,8 +48,16 @@ export const boardsSlice = createSlice({
             isChecked: false,
             order: 0,
           },
+          {
+            title: 'И меня тоже!',
+            id: uuidv4(),
+            content: 'Нажать на кнопку слева!',
+            isChecked: false,
+            order: 1,
+          },
         ],
       });
+      
     },
     renameBoard: (state, action: PayloadAction<[boardId: string, newTitle: string]>) => {
       state.boards.forEach((board) => {
@@ -56,6 +72,14 @@ export const boardsSlice = createSlice({
       state,
       action: PayloadAction<[boardId: string, title: string, content: string]>,
     ) => {
+      let order = 0
+      state.boards.forEach((board) => {
+        if(board.id === action.payload[0]) {
+          board.items.forEach((todo) => {
+            if(todo.order >= order) order = todo.order+1
+          })
+        }        
+      });
       const findBoardIdx = (): number => {
         return state.boards.findIndex((board) => board.id === action.payload[0]);
       };
@@ -65,7 +89,7 @@ export const boardsSlice = createSlice({
         id: uuidv4(),
         content: 'Нажать на кнопку слева!',
         isChecked: false,
-        order: 0,
+        order: order,
       });
     },
     renameTodo: (state, action: PayloadAction<[todoId: string, newTitle: string]>) => {

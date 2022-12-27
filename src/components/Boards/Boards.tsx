@@ -1,17 +1,10 @@
-import React from 'react';
 import { useAppDispatch, useAppSelector } from '../../hooks';
-import {
-  createTodo,
-  deleteBoard,
-  renameBoard,
-  renameTodo,
-  todoChecked,
-  updateContentInTodo,
-} from '../../redux/slices/boardSlices';
+import { createTodo, deleteBoard, renameBoard } from '../../redux/slices/boardSlices';
 import { Todo } from '../Todo/Todo';
 import styles from './Boards.module.scss';
 
 import { HiTrash, HiPencilSquare, HiPencil } from 'react-icons/hi2';
+import { TodoItem } from '../../redux/models';
 
 export const Boards = () => {
   const dispatch = useAppDispatch();
@@ -21,16 +14,20 @@ export const Boards = () => {
     dispatch(createTodo([boardId, title, content]));
   };
 
-  // const onDragStartHandler = (e) => {};
-  // const onDragExitHandler = (e) => {};
-  // const onDragOverHandler = (e) => {};
-  // const onDragEndHandler = (e) => {};
-  // const onDropHandler = (e) => {};
+  const sortTodos = (a: TodoItem, b: TodoItem): number => {
+    if (a.order > b.order) {
+      return 1;
+    }
+    if (a.order < b.order) {
+      return -1;
+    }
+    return 1;
+  };
 
   return (
     <div className={styles.wrapper}>
       {boards.map((board, i) => (
-        <div className={styles.board} key={i} draggable>
+        <div className={styles.board} key={i}>
           <h1>{board.title}</h1>
           <button onClick={() => dispatch(renameBoard([board.id, 'Текст из формы']))}>
             <HiPencil />
@@ -42,9 +39,12 @@ export const Boards = () => {
             <HiTrash />
           </button>
           <ul className={styles.list}>
-            {board.items.map((todo, i) => (
-              <Todo todo={todo} key={i} />
-            ))}
+            {board.items
+              .slice() // Используется для фикса typeerror
+              .sort(sortTodos)
+              .map((todo, i) => (
+                <Todo todo={todo} board={board} key={i} />
+              ))}
           </ul>
         </div>
       ))}
