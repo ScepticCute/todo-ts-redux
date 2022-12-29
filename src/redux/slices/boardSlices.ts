@@ -1,4 +1,4 @@
-import { State } from '../models';
+import { State, TodoItem } from '../models';
 import { createSlice } from '@reduxjs/toolkit';
 import type { PayloadAction } from '@reduxjs/toolkit';
 import { v4 as uuidv4 } from 'uuid';
@@ -28,13 +28,11 @@ export const boardsSlice = createSlice({
   reducers: {
     createBoard: (state, action: PayloadAction<string>) => {
       let order = 0;
-      state.boards.forEach((board) =>
-          { 
-            if(board.order >= order) {
-            order = board.order+1
-          }
+      state.boards.forEach((board) => {
+        if (board.order >= order) {
+          order = board.order + 1;
         }
-      )
+      });
 
       state.boards.push({
         title: action.payload || `Доска ${order}`,
@@ -57,7 +55,6 @@ export const boardsSlice = createSlice({
           },
         ],
       });
-      
     },
     renameBoard: (state, action: PayloadAction<[boardId: string, newTitle: string]>) => {
       state.boards.forEach((board) => {
@@ -72,13 +69,13 @@ export const boardsSlice = createSlice({
       state,
       action: PayloadAction<[boardId: string, title: string, content: string]>,
     ) => {
-      let order = 0
+      let order = 0;
       state.boards.forEach((board) => {
-        if(board.id === action.payload[0]) {
+        if (board.id === action.payload[0]) {
           board.items.forEach((todo) => {
-            if(todo.order >= order) order = todo.order+1
-          })
-        }        
+            if (todo.order >= order) order = todo.order + 1;
+          });
+        }
       });
       const findBoardIdx = (): number => {
         return state.boards.findIndex((board) => board.id === action.payload[0]);
@@ -126,6 +123,17 @@ export const boardsSlice = createSlice({
       );
       state.boards[boardIdx].items.splice(todoIdx, 1);
     },
+    setCurrentTodo: (state, action: PayloadAction<TodoItem>) => {
+      // Костыль из-за неправильной архитектуры приложения.
+      // Нужно было прокинуть с борды пропсом в туду сетСтейтКаррентТуду
+      // и уже от этого двигаться.
+      // Я очень устал с этим работать. Слишком много неправильных решений было выбрано.
+      // Желательно перестроить всю логику с нуля с чистой головой.
+    },
+
+    changeOrders: (state, action: PayloadAction<[currentTodo: TodoItem, eventTodo: TodoItem]>) => {
+      // Здесь должна быть логика сортировки по ордерам тудушек.
+    },
   },
 });
 
@@ -138,5 +146,7 @@ export const {
   updateContentInTodo,
   todoChecked,
   deleteTodo,
+  changeOrders,
+  setCurrentTodo,
 } = boardsSlice.actions;
 export default boardsSlice.reducer;

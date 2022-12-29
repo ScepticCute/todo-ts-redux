@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useAppDispatch, useAppSelector } from '../../hooks';
 import { Board, TodoItem } from '../../redux/models';
 import {
+  createBoard,
   deleteTodo,
   renameTodo,
   todoChecked,
@@ -17,21 +18,13 @@ interface IProps {
 }
 
 interface IOnDragEvents {
-  (e: React.DragEvent<HTMLLIElement>, todo?: TodoItem, board?: Board): void;
+  (e: React.DragEvent<HTMLLIElement>): void;
 }
 
 export const Todo: React.FC<IProps> = ({ todo, board }) => {
-  const boards: Board[] = useAppSelector((state) => state.boards.boards);
   const dispatch = useAppDispatch();
 
-  const [currentTodo, setCurrentTodo] = useState<TodoItem>();
-  const [currentBoard, setCurrentBoard] = useState<Board>();
-
-  const onDragStartHandler: IOnDragEvents = (e, todo, board) => {
-    setCurrentTodo(todo);
-    setCurrentBoard(board);
-    console.log(todo, ' -- Старт');
-  };
+  const onDragStartHandler: IOnDragEvents = (e) => {};
   const onDragEndHandler: IOnDragEvents = (e) => {};
   const onDragLeaveHandler: IOnDragEvents = (e) => {
     // @ts-ignore, event target не видит style свойства :(
@@ -43,23 +36,21 @@ export const Todo: React.FC<IProps> = ({ todo, board }) => {
     e.target.style.background = 'var(--blue) ';
     console.log('over');
   };
-  const onDropHandler: IOnDragEvents = (e, todo) => {
+  const onDropHandler: IOnDragEvents = (e) => {
     e.preventDefault();
     // @ts-ignore, event target не видит style свойства :(
     e.target.style.background = 'white';
-
-    console.log(todo, ' -- Дроп');
   };
 
   return (
     <li
       className={styles.todo_item}
       draggable
-      onDragStart={(e) => onDragStartHandler(e, todo, board)}
+      onDragStart={(e) => onDragStartHandler(e)}
       onDragEnd={(e) => onDragEndHandler(e)}
       onDragLeave={(e) => onDragLeaveHandler(e)}
       onDragOver={(e) => onDragOverHandler(e)}
-      onDrop={(e) => onDropHandler(e, todo, board)}>
+      onDrop={(e) => onDropHandler(e)}>
       <h1>{todo.title}</h1>
       <button onClick={() => dispatch(renameTodo([todo.id, 'Новое название']))}>
         <HiPencil />
