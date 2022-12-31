@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useAppDispatch } from '../../hooks';
 import { createBoard } from '../../redux/slices/boardSlices';
 import styles from './FormCreateBoard.module.scss';
+import {HiXCircle} from 'react-icons/hi2'
 
 export const FormCreateBoard = ({ setOpen }: any) => {
   const dispatch = useAppDispatch();
@@ -21,20 +22,23 @@ export const FormCreateBoard = ({ setOpen }: any) => {
   return (
     <div className={styles.wrapper}>
       <button
+        className={styles.close_button}
         onClick={() => {
           setOpen();
         }}>
-        Закрыть окно
+        <HiXCircle />
       </button>
       <form className={styles.form}>
         <input
+        className={styles.input_text}
           type="text"
           placeholder="Введите название доски..."
           value={inputValue}
           onChange={(e) => setInputValue(e.target.value)}
         />
         <input
-          type="submit"
+        className={styles.input_submit}
+        type="submit"
           value="Создать доску задач"
           onClick={(e) => onClickSubmit(e, inputValue)}
         />

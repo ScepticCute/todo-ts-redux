@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { useAppDispatch, useAppSelector } from '../../hooks';
 import { Board, TodoItem } from '../../redux/models';
 import {
-  createBoard,
+  changeOrders,
   deleteTodo,
   renameTodo,
   todoChecked,
@@ -15,16 +15,23 @@ import { HiTrash, HiPencilSquare, HiPencil } from 'react-icons/hi2';
 interface IProps {
   todo: TodoItem;
   board: Board;
+  currentTodo: TodoItem | undefined;
+  setCurrentTodo: React.Dispatch<React.SetStateAction<TodoItem | undefined>>;
 }
 
 interface IOnDragEvents {
   (e: React.DragEvent<HTMLLIElement>): void;
 }
 
-export const Todo: React.FC<IProps> = ({ todo, board }) => {
+export const Todo: React.FC<IProps> = ({ todo, board, currentTodo, setCurrentTodo }) => {
   const dispatch = useAppDispatch();
+  // const {isChecked} = useAppSelector(state => state.boards[board.order].items[todo.order]);
 
-  const onDragStartHandler: IOnDragEvents = (e) => {};
+  const onDragStartHandler: IOnDragEvents = (e) => {
+    setCurrentTodo(todo);
+
+    console.log('start');
+  };
   const onDragEndHandler: IOnDragEvents = (e) => {};
   const onDragLeaveHandler: IOnDragEvents = (e) => {
     // @ts-ignore, event target не видит style свойства :(
@@ -34,12 +41,23 @@ export const Todo: React.FC<IProps> = ({ todo, board }) => {
     e.preventDefault();
     // @ts-ignore, event target не видит style свойства :(
     e.target.style.background = 'var(--blue) ';
-    console.log('over');
   };
   const onDropHandler: IOnDragEvents = (e) => {
     e.preventDefault();
     // @ts-ignore, event target не видит style свойства :(
     e.target.style.background = 'white';
+    if (currentTodo) {
+      dispatch(changeOrders([currentTodo, todo]));
+    } else if (!currentTodo) {
+      console.error('!!!currentTodo === undefined!!!');
+    }
+
+    console.log('drop => ', todo);
+    setCurrentTodo(undefined);
+  };
+
+  const onChangeCheckboxHandler = () => {
+    dispatch(todoChecked(todo.id));
   };
 
   return (
@@ -61,7 +79,9 @@ export const Todo: React.FC<IProps> = ({ todo, board }) => {
       <button onClick={() => dispatch(deleteTodo(todo.id))}>
         <HiTrash />
       </button>
-      <input type={'checkbox'} onChange={() => dispatch(todoChecked(todo.id))} />
+      <input type={'checkbox'} onChange={() => onChangeCheckboxHandler()} />
+      {/* <input type={'checkbox'} checked={isChecked} onChange={() => onChangeCheckboxHandler()} /> */} 
+      {/*  💓Первым делом почини чекбокс. 💓 */}
       <p
         className={
           todo.isChecked ? styles.todo_content + ' ' + styles.checked : styles.todo_content

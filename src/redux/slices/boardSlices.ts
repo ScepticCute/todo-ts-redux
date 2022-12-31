@@ -1,3 +1,4 @@
+import { Board } from './../models';
 import { State, TodoItem } from '../models';
 import { createSlice } from '@reduxjs/toolkit';
 import type { PayloadAction } from '@reduxjs/toolkit';
@@ -123,16 +124,17 @@ export const boardsSlice = createSlice({
       );
       state.boards[boardIdx].items.splice(todoIdx, 1);
     },
-    setCurrentTodo: (state, action: PayloadAction<TodoItem>) => {
-      // Костыль из-за неправильной архитектуры приложения.
-      // Нужно было прокинуть с борды пропсом в туду сетСтейтКаррентТуду
-      // и уже от этого двигаться.
-      // Я очень устал с этим работать. Слишком много неправильных решений было выбрано.
-      // Желательно перестроить всю логику с нуля с чистой головой.
-    },
-
     changeOrders: (state, action: PayloadAction<[currentTodo: TodoItem, eventTodo: TodoItem]>) => {
-      // Здесь должна быть логика сортировки по ордерам тудушек.
+      state.boards.forEach((board) =>
+        board.items.forEach((todo, i) => {
+          if (todo.id === action.payload[0].id ) {
+            board.items.splice(i, 1, { ...todo, order: action.payload[1].order });
+          }
+          if (todo.id === action.payload[1].id ) {
+            board.items.splice(i, 1, { ...todo, order: action.payload[0].order });
+          }
+        }),
+      );
     },
   },
 });
@@ -147,6 +149,5 @@ export const {
   todoChecked,
   deleteTodo,
   changeOrders,
-  setCurrentTodo,
 } = boardsSlice.actions;
 export default boardsSlice.reducer;

@@ -16,5 +16,4 @@ export type Board = {
 export type State = {
   boards: Board[];
   settings?: any;
-  currentTodo?: TodoItem;
 };
