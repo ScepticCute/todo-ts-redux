@@ -3,7 +3,6 @@
   border-radius: 7px;
   text-decoration: none;
   box-shadow: rgb(15 15 15 / 10%) 0px 0px 0px 1px, rgb(15 15 15 / 10%) 0px 2px 4px;
-  background: white;
   overflow: hidden;
   transition: 300ms ease-out 0s;
   margin-bottom: 5px;
@@ -11,9 +10,9 @@
   padding: 15px;
   font-size: 14px;
   margin: 20px 0;
+  cursor: grab;
   &:hover {
     box-shadow: 2px 2px 10px 0px rgba(34, 60, 80, 0.23);
-    background-color: rgb(0,0,0,.03);
   }
 
   button {

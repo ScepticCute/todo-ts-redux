@@ -1,8 +1,8 @@
-import { Board } from './../models';
 import { State, TodoItem } from '../models';
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice, current } from '@reduxjs/toolkit';
 import type { PayloadAction } from '@reduxjs/toolkit';
 import { v4 as uuidv4 } from 'uuid';
+import { findBoardId } from '../../utils/findBoardId';
 
 const initialState: State = {
   boards: [
@@ -27,7 +27,7 @@ export const boardsSlice = createSlice({
   name: 'boards',
   initialState,
   reducers: {
-    createBoard: (state, action: PayloadAction<string>) => {
+    createBoard: (state, action: PayloadAction<[title: string, colorTheme: string]>) => {
       let order = 0;
       state.boards.forEach((board) => {
         if (board.order >= order) {
@@ -36,7 +36,7 @@ export const boardsSlice = createSlice({
       });
 
       state.boards.push({
-        title: action.payload || `Доска ${order}`,
+        title: action.payload[0] || `Доска ${order}`,
         id: uuidv4(),
         order: order,
         items: [
@@ -55,6 +55,8 @@ export const boardsSlice = createSlice({
             order: 1,
           },
         ],
+        settings: [action.payload[1]] || ['Стандарт'],
+        // Нужно настроить классы в Boards, чтобы они изменялись от значения в settings.
       });
     },
     renameBoard: (state, action: PayloadAction<[boardId: string, newTitle: string]>) => {
@@ -112,26 +114,25 @@ export const boardsSlice = createSlice({
       );
     },
     deleteTodo: (state, action: PayloadAction<string>) => {
-      let boardIdx = 0;
-      let todoIdx = 0;
-      state.boards.forEach((board, i) =>
-        board.items.forEach((todo, j) => {
-          if (todo.id === action.payload) {
-            boardIdx = i;
-            todoIdx = j;
-          }
-        }),
-      );
-      state.boards[boardIdx].items.splice(todoIdx, 1);
+      let indexes = findBoardId(state, action.payload, true);
+      if (indexes) state.boards[indexes[0]].items.splice(indexes[1], 1);
     },
     changeOrders: (state, action: PayloadAction<[currentTodo: TodoItem, eventTodo: TodoItem]>) => {
-      state.boards.forEach((board) =>
-        board.items.forEach((todo, i) => {
-          if (todo.id === action.payload[0].id ) {
-            board.items.splice(i, 1, { ...todo, order: action.payload[1].order });
+      let boardIdxOfCurrent = findBoardId(state, action.payload[0].id);
+      let boardIdxOfEvent = findBoardId(state, action.payload[1].id);
+      state.boards.forEach((board, i) =>
+        board.items.forEach((todo, j) => {
+          if (todo.id === action.payload[0].id) {
+            if (board.id === state.boards[boardIdxOfEvent[0]].id) {
+              board.items.splice(j, 1, { ...todo, order: action.payload[1].order });
+            } else board.items.splice(j, 1, { ...action.payload[1] });
           }
-          if (todo.id === action.payload[1].id ) {
-            board.items.splice(i, 1, { ...todo, order: action.payload[0].order });
+          if (todo.id === action.payload[1].id) {
+            if (board.id === state.boards[boardIdxOfCurrent[0]].id) {
+              if (todo.order === action.payload[0].order && todo.id !== action.payload[0].id) {
+                board.items.splice(j, 1, { ...todo, order: action.payload[0].order - 0.01 });
+              } else board.items.splice(j, 1, { ...todo, order: action.payload[0].order });
+            } else board.items.splice(j, 1, { ...action.payload[0] });
           }
         }),
       );

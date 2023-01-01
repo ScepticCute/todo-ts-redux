@@ -4,18 +4,25 @@ import { createBoard } from '../../redux/slices/boardSlices';
 import styles from './FormCreateBoard.module.scss';
 import {HiXCircle} from 'react-icons/hi2'
 
+const boardColors = ['Стандарт', 'Красный', 'Синий', 'Желтый'];
+
 export const FormCreateBoard = ({ setOpen }: any) => {
   const dispatch = useAppDispatch();
 
-  const [inputValue, setInputValue] = useState('');
+  const [inputValueText, setInputValueText] = useState('');
+  const [selectValue, setSelectValue] = useState(boardColors[0]);
+
+  const onChangeSelectHandler: React.ChangeEventHandler<HTMLSelectElement> = (e) => {
+    setSelectValue(e.target.value);
+  };
 
   const onClickSubmit = (
     e: React.MouseEvent<HTMLInputElement, MouseEvent>,
     title: string,
   ): void => {
     e.preventDefault();
-    dispatch(createBoard(title));
-    setInputValue('');
+    dispatch(createBoard([title, selectValue]));
+    setInputValueText('');
     setOpen(false);
   };
 
@@ -30,17 +37,26 @@ export const FormCreateBoard = ({ setOpen }: any) => {
       </button>
       <form className={styles.form}>
         <input
-        className={styles.input_text}
+          className={styles.input_text}
           type="text"
           placeholder="Введите название доски..."
-          value={inputValue}
-          onChange={(e) => setInputValue(e.target.value)}
+          value={inputValueText}
+          onChange={(e) => setInputValueText(e.target.value)}
         />
+        <select
+          className={styles.input_select}
+          value={selectValue}
+          onChange={(e) => onChangeSelectHandler(e)}>
+          {boardColors.map((el) => (
+            <option value={el}> {el} </option>
+          ))}
+        </select>
+
         <input
-        className={styles.input_submit}
-        type="submit"
-          value="Создать доску задач"
-          onClick={(e) => onClickSubmit(e, inputValue)}
+          className={styles.input_submit}
+          type="submit"
+          value="Создать доску"
+          onClick={(e) => onClickSubmit(e, inputValueText)}
         />
       </form>
     </div>

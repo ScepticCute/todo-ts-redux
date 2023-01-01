@@ -11,6 +11,7 @@ export type Board = {
   id: string;
   order: number;
   items: TodoItem[];
+  settings?: [colorTheme: string];
 };
 
 export type State = {

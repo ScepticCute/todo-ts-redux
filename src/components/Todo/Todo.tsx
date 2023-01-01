@@ -25,7 +25,6 @@ interface IOnDragEvents {
 
 export const Todo: React.FC<IProps> = ({ todo, board, currentTodo, setCurrentTodo }) => {
   const dispatch = useAppDispatch();
-  // const {isChecked} = useAppSelector(state => state.boards[board.order].items[todo.order]);
 
   const onDragStartHandler: IOnDragEvents = (e) => {
     setCurrentTodo(todo);
@@ -79,15 +78,16 @@ export const Todo: React.FC<IProps> = ({ todo, board, currentTodo, setCurrentTod
       <button onClick={() => dispatch(deleteTodo(todo.id))}>
         <HiTrash />
       </button>
-      <input type={'checkbox'} onChange={() => onChangeCheckboxHandler()} />
-      {/* <input type={'checkbox'} checked={isChecked} onChange={() => onChangeCheckboxHandler()} /> */} 
-      {/*  💓Первым делом почини чекбокс. 💓 */}
+      <input
+        type={'checkbox'}
+        checked={todo.isChecked}
+        onChange={() => onChangeCheckboxHandler()}
+      />
       <p
         className={
           todo.isChecked ? styles.todo_content + ' ' + styles.checked : styles.todo_content
         }>
         {todo.content}
-        {todo.order}
       </p>
     </li>
   );
