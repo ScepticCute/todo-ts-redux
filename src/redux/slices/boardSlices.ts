@@ -1,5 +1,5 @@
 import { State, TodoItem } from '../models';
-import { createSlice, current } from '@reduxjs/toolkit';
+import { createSlice } from '@reduxjs/toolkit';
 import type { PayloadAction } from '@reduxjs/toolkit';
 import { v4 as uuidv4 } from 'uuid';
 import { findBoardId } from '../../utils/findBoardId';

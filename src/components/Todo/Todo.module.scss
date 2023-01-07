@@ -16,14 +16,63 @@
   }
 
   button {
-    
     cursor: pointer;
+  }
+
+  .input_checkbox {
+  }
+  .checked {
+    text-decoration: line-through;
+  }
+  form {
+    margin-top: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    .input_text {
+      outline: 1px solid var(--blue-opacity);
+      font-family: inherit;
+      font-size: inherit;
+      line-height: inherit;
+      margin: 0;
+      display: block;
+      padding: 0.375rem 0.75rem;
+      font-family: inherit;
+      font-size: 14px;
+      font-weight: 300;
+      line-height: 1.5;
+      color: #212529;
+      background-clip: padding-box;
+      border: 1px solid var(--grey-opacity);
+      border-radius: 0.25rem;
+      transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+      &:hover,
+      &:focus {
+        box-shadow: 0 0 3px 1px rgba(29, 0, 192, 0.05);
+      }
+    }
+    .input_submit {
+      outline: 1px solid var(--blue-opacity);
+      font-family: inherit;
+      font-size: inherit;
+      line-height: inherit;
+      margin: 0;
+      display: block;
+      padding: 0.375rem 0.75rem;
+      font-family: inherit;
+      font-size: 14px;
+      font-weight: 300;
+      line-height: 1.5;
+      color: #212529;
+      background-clip: padding-box;
+      border: 1px solid var(--grey-opacity);
+      border-radius: 0.25rem;
+      transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+    }
   }
 
   .todo_content {
     font-weight: 300;
-  }
-  .checked {
-    text-decoration: line-through;
   }
 }

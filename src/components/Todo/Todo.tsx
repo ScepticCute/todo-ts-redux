@@ -26,10 +26,15 @@ interface IOnDragEvents {
 export const Todo: React.FC<IProps> = ({ todo, board, currentTodo, setCurrentTodo }) => {
   const dispatch = useAppDispatch();
 
-  const onDragStartHandler: IOnDragEvents = (e) => {
-    setCurrentTodo(todo);
+  const [inputText, setInputText] = React.useState('');
+  const [targetForEdit, setTargetForEdit] = React.useState<
+    [todoId?: string, targetForEdit?: 'content' | 'title']
+  >([]);
 
-    console.log('start');
+  const onDragStartHandler: IOnDragEvents = (e) => {
+    setTargetForEdit([]);
+    setCurrentTodo(todo);
+    console.log(e.target);
   };
   const onDragEndHandler: IOnDragEvents = (e) => {};
   const onDragLeaveHandler: IOnDragEvents = (e) => {
@@ -43,20 +48,34 @@ export const Todo: React.FC<IProps> = ({ todo, board, currentTodo, setCurrentTod
   };
   const onDropHandler: IOnDragEvents = (e) => {
     e.preventDefault();
+    setTargetForEdit([]);
     // @ts-ignore, event target не видит style свойства :(
     e.target.style.background = 'white';
+    console.log(e.target);
     if (currentTodo) {
       dispatch(changeOrders([currentTodo, todo]));
-    } else if (!currentTodo) {
-      console.error('!!!currentTodo === undefined!!!');
     }
-
-    console.log('drop => ', todo);
     setCurrentTodo(undefined);
   };
 
   const onChangeCheckboxHandler = () => {
     dispatch(todoChecked(todo.id));
+  };
+
+  const onChangeTextHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setInputText(e.target.value);
+  };
+
+  const onClickSubmit = (e: React.MouseEvent<HTMLInputElement, MouseEvent>) => {
+    e.preventDefault();
+    if (targetForEdit[1] === 'content' && targetForEdit[0] !== undefined) {
+      dispatch(updateContentInTodo([targetForEdit[0], inputText]));
+    }
+    if (targetForEdit[1] === 'title' && targetForEdit[0] !== undefined) {
+      dispatch(renameTodo([targetForEdit[0], inputText]));
+    }
+    setTargetForEdit([]);
+    setInputText('');
   };
 
   return (
@@ -69,20 +88,43 @@ export const Todo: React.FC<IProps> = ({ todo, board, currentTodo, setCurrentTod
       onDragOver={(e) => onDragOverHandler(e)}
       onDrop={(e) => onDropHandler(e)}>
       <h1>{todo.title}</h1>
-      <button onClick={() => dispatch(renameTodo([todo.id, 'Новое название']))}>
+      <button onClick={() => setTargetForEdit([todo.id, 'title'])}>
         <HiPencil />
       </button>
-      <button onClick={() => dispatch(updateContentInTodo([todo.id, 'Текст из формы']))}>
+      <button onClick={() => setTargetForEdit([todo.id, 'content'])}>
         <HiPencilSquare />
       </button>
       <button onClick={() => dispatch(deleteTodo(todo.id))}>
         <HiTrash />
       </button>
       <input
+        className={styles.input_checkbox}
         type={'checkbox'}
         checked={todo.isChecked}
         onChange={() => onChangeCheckboxHandler()}
       />
+
+      {targetForEdit[1] ? (
+        <form>
+          <input
+            className={styles.input_text}
+            type={'text'}
+            value={inputText}
+            onChange={(e) => onChangeTextHandler(e)}
+            required={true}
+            placeholder={
+              targetForEdit[1] === 'content' ? 'Измените задачу...' : 'Переименуйте задачу...'
+            }
+          />
+          <input
+            className={styles.input_submit}
+            type={'submit'}
+            onClick={(e) => onClickSubmit(e)}
+          />
+        </form>
+      ) : (
+        ''
+      )}
       <p
         className={
           todo.isChecked ? styles.todo_content + ' ' + styles.checked : styles.todo_content
