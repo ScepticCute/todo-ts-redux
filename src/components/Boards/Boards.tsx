@@ -21,17 +21,13 @@ export const Boards = () => {
     return a.order - b.order;
   };
 
+
   return (
     <div className={styles.wrapper}>
       {boards
-        .slice()
-        // .sort(sortFunc) на случай, если решу делать драг-доски
         .map((board, i) => (
           <div className={styles.board} key={i}>
             <h1>{board.title}</h1>
-            <button onClick={() => dispatch(renameBoard([board.id, 'Текст из формы']))}>
-              <HiPencil />
-            </button>
             <button onClick={() => onClickNewTodo(board.id, 'Название', 'Содержание')}>
               <HiPencilSquare />
             </button>

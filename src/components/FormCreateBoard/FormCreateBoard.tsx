@@ -12,10 +12,6 @@ export const FormCreateBoard = ({ setOpen }: any) => {
   const [inputValueText, setInputValueText] = useState('');
   const [selectValue, setSelectValue] = useState(boardColors[0]);
 
-  const onChangeSelectHandler: React.ChangeEventHandler<HTMLSelectElement> = (e) => {
-    setSelectValue(e.target.value);
-  };
-
   const onClickSubmit = (
     e: React.MouseEvent<HTMLInputElement, MouseEvent>,
     title: string,
@@ -43,14 +39,6 @@ export const FormCreateBoard = ({ setOpen }: any) => {
           value={inputValueText}
           onChange={(e) => setInputValueText(e.target.value)}
         />
-        <select
-          className={styles.input_select}
-          value={selectValue}
-          onChange={(e) => onChangeSelectHandler(e)}>
-          {boardColors.map((el) => (
-            <option value={el}> {el} </option>
-          ))}
-        </select>
 
         <input
           className={styles.input_submit}

@@ -14,7 +14,7 @@ const initialState: State = {
         {
           title: 'Завершить это дело!',
           id: uuidv4(),
-          content: 'Нажать на кнопку слева!',
+          content: 'Нажать на карандашик выше!',
           isChecked: false,
           order: 0,
         },
@@ -55,8 +55,6 @@ export const boardsSlice = createSlice({
             order: 1,
           },
         ],
-        settings: [action.payload[1]] || ['Стандарт'],
-        // Нужно настроить классы в Boards, чтобы они изменялись от значения в settings.
       });
     },
     renameBoard: (state, action: PayloadAction<[boardId: string, newTitle: string]>) => {
