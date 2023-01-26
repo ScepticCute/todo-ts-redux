@@ -34,24 +34,24 @@ export const Todo: React.FC<IProps> = ({ todo, board, currentTodo, setCurrentTod
   const onDragStartHandler: IOnDragEvents = (e) => {
     setTargetForEdit([]);
     setCurrentTodo(todo);
-    console.log(e.target);
+    console.log(e.currentTarget);
   };
   const onDragEndHandler: IOnDragEvents = (e) => {};
   const onDragLeaveHandler: IOnDragEvents = (e) => {
     // @ts-ignore, event target не видит style свойства :(
-    e.target.style.background = 'white';
+    e.currentTarget.style.background = 'white';
   };
   const onDragOverHandler: IOnDragEvents = (e) => {
     e.preventDefault();
     // @ts-ignore, event target не видит style свойства :(
-    e.target.style.background = 'var(--blue) ';
+    e.currentTarget.style.background = 'var(--blue) ';
   };
   const onDropHandler: IOnDragEvents = (e) => {
     e.preventDefault();
     setTargetForEdit([]);
     // @ts-ignore, event target не видит style свойства :(
-    e.target.style.background = 'white';
-    console.log(e.target);
+    e.currentTarget.style.background = 'white';
+    console.log(e.currentTarget);
     if (currentTodo) {
       dispatch(changeOrders([currentTodo, todo]));
     }
@@ -63,7 +63,7 @@ export const Todo: React.FC<IProps> = ({ todo, board, currentTodo, setCurrentTod
   };
 
   const onChangeTextHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setInputText(e.target.value);
+    setInputText(e.currentTarget.value);
   };
 
   const onClickSubmit = (e: React.MouseEvent<HTMLInputElement, MouseEvent>) => {
