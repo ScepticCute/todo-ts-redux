@@ -22,31 +22,41 @@ export const FormCreateBoard = ({ setOpen }: any) => {
     setOpen(false);
   };
 
-  return (
-    <div className={styles.wrapper}>
-      <button
-        className={styles.close_button}
-        onClick={() => {
-          setOpen();
-        }}>
-        <HiXCircle />
-      </button>
-      <form className={styles.form}>
-        <input
-          className={styles.input_text}
-          type="text"
-          placeholder="Введите название доски..."
-          value={inputValueText}
-          onChange={(e) => setInputValueText(e.target.value)}
-        />
+  const onClickBackgroundHandler = (e: React.MouseEvent<HTMLInputElement, MouseEvent>) => {
+    setOpen(false)
+  }
 
-        <input
-          className={styles.input_submit}
-          type="submit"
-          value="Создать доску"
-          onClick={(e) => onClickSubmit(e, inputValueText)}
-        />
-      </form>
+  const stopPropagation = (e: React.MouseEvent<HTMLInputElement, MouseEvent>) => {
+    e.stopPropagation()
+  }
+
+  return (
+    <div className={styles.background} onClick={(e: React.MouseEvent<HTMLInputElement, MouseEvent>) => onClickBackgroundHandler(e)}>
+      <div className={styles.wrapper} onClick={(e: React.MouseEvent<HTMLInputElement, MouseEvent>) => stopPropagation(e)}>
+        <button
+          className={styles.close_button}
+          onClick={() => {
+            setOpen();
+          }}>
+          <HiXCircle />
+        </button>
+        <form className={styles.form}>
+          <input
+            className={styles.input_text}
+            type="text"
+            placeholder="Введите название доски..."
+            value={inputValueText}
+            onChange={(e) => setInputValueText(e.target.value)}
+          />
+
+          <input
+            className={styles.input_submit}
+            type="submit"
+            value="Создать доску"
+            onClick={(e) => onClickSubmit(e, inputValueText)}
+          />
+        </form>
+      </div>
     </div>
   );
 };

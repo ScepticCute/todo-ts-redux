@@ -1,74 +1,83 @@
-.wrapper {
-  position: fixed;
-  border-radius: 30px;
-  background-color: white;
-  width: 50%;
-  height: 50%;
-  margin: 0 auto;
-  padding: 40px;
-  top: 15%;
-  right: 25%;
-  padding: 30px;
-  animation: block 0.4s ease;
-  box-shadow: rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px, rgba(10, 37, 64, 0.35) 0px -2px 6px 0px inset;
-  .close_button {
-    position: absolute;
-    top: 30px;
-    right: 30px;
-    border-radius: 8px;
-    border: none;
-    background: transparent;
-    cursor: pointer;
-    font-size: 35px;
-  }
-
-  .form {
-    margin-top: 40px;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-  }
-
-  .input {
-    &_text {
-      border: 1px solid var(--grey);
-
-      padding: 20px;
-      margin-top: 20px;
-      font-size: 16px;
-      min-width: 40px;
-      border-radius: 8px;
-      &:focus {
-        outline: 3px solid var(--blue);
-      }
-    }
-    &_select {
-      font-size: 16px;
-      border-radius: 8px;
-      border: 1px solid var(--grey);
-      margin: 10px 0;
-      padding: 10px;
-      outline: none;
-      &:focus {
-        outline: 3px solid var(--blue);
-      }
-    }
-    &_submit {
+.background {
+  position: absolute;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgb(0,0,0,.5);
+  z-index: 100;
+  .wrapper {
+    z-index: 1000;
+    position: fixed;
+    border-radius: 30px;
+    background-color: white;
+    width: 50%;
+    height: 50%;
+    margin: 0 auto;
+    padding: 40px;
+    top: 15%;
+    right: 25%;
+    padding: 30px;
+    animation: block 0.4s ease;
+    box-shadow: rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px, rgba(10, 37, 64, 0.35) 0px -2px 6px 0px inset;
+    .close_button {
       position: absolute;
-      margin: 15px 0;
+      top: 30px;
       right: 30px;
-      bottom: 20px;
+      border-radius: 8px;
+      border: none;
+      background: transparent;
       cursor: pointer;
-      color: white;
-      font-size: 14px;
-      width: 150px;
-      height: 50px;
-      padding: 5px;
-      background-color: rgb(0, 0, 0, 0.4);
-      border-radius: 50px;
-      border: 1px solid var(--grey);
-      &:focus {
-        outline: 3px solid var(--blue);
+      font-size: 35px;
+    }
+
+    .form {
+      margin-top: 40px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .input {
+      &_text {
+        border: 1px solid var(--grey);
+
+        padding: 20px;
+        margin-top: 20px;
+        font-size: 16px;
+        min-width: 40px;
+        border-radius: 8px;
+        &:focus {
+          outline: 3px solid var(--blue);
+        }
+      }
+      &_select {
+        font-size: 16px;
+        border-radius: 8px;
+        border: 1px solid var(--grey);
+        margin: 10px 0;
+        padding: 10px;
+        outline: none;
+        &:focus {
+          outline: 3px solid var(--blue);
+        }
+      }
+      &_submit {
+        position: absolute;
+        margin: 15px 0;
+        right: 30px;
+        bottom: 20px;
+        cursor: pointer;
+        color: white;
+        width: 150px;
+        font-weight: 300;
+        font-size: 14px;
+        height: 50px;
+        padding: 5px;
+        background-color: rgb(0, 0, 0);
+        border-radius: 50px;
+        border: 1px solid var(--grey);
+        &:focus {
+          outline: 5px solid var(--blue);
+        }
       }
     }
   }
@@ -81,5 +90,14 @@
   }
   100% {
     opacity: 1;
+  }
+}
+
+@media (max-width: 600px) {
+  .background {
+    .wrapper {
+      width: 300px;
+      left: 7.5%;
+  }
   }
 }
